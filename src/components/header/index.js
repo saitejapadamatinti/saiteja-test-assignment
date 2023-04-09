@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
+import { redirect } from "react-router-dom";
 import Cookies from "js-cookie";
+
+// const UserContext = React.createContext()
 
 const Header = () => {
   const [searchValue, setSearchValue] = useState("");
-  console.log(searchValue);
+  const [searchInputValue, setSearchInputValue] = useState("");
 
   const onChangeSearch = (e) => {
     setSearchValue(e.target.value);
@@ -12,9 +15,6 @@ const Header = () => {
 
   const onFormSubmit = (e) => {
     e.preventDefault();
-    // Cookies.set("searchInputValue", {searchValue}, { maxAge:  5});
-  //   const inputValue =  Cookies.get("searchInputValue")
-  //  console.log(inputValue)  
   };
 
   return (
@@ -26,9 +26,9 @@ const Header = () => {
         <NavLink to="/favorite" className="text-xl">
           Favarioate
         </NavLink>
-        <form onSubmit={(e) => onFormSubmit(e)}>
-          <input onChange={(e) => onChangeSearch(e)} type="text" />
-          <Link to="/search">
+        <form type="submit" onSubmit={(e) => onFormSubmit(e)}>
+          <input onChange={(e) => onChangeSearch(e)} type="search" />
+          <Link to={`/search/${searchValue}`}>
             <button type="submit">Submit</button>
           </Link>
         </form>

@@ -28,7 +28,7 @@ const MovieDetails = () => {
 
   useEffect(() => {
     geetingMovieDataFromApi();
-  }, []);
+  });
 
   return isLoading ? (
     <div className="w-screen h-screen flex justify-center items-center">
