@@ -1,87 +1,81 @@
 import { useEffect } from "react";
 import { useState } from "react";
 import { ClipLoader } from "react-spinners";
-import Header from "../header";
 import MoviesPage from "../moviesComponent";
+import { BsSearch } from "react-icons/bs";
 
-const toGetRequestToken =
-  "https://api.themoviedb.org/3/authentication/token/new?api_key=4a867d8702eaa2d58333f3feb3238409";
+// const toGetRequestToken =
+//   "https://api.themoviedb.org/3/authentication/token/new?api_key=4a867d8702eaa2d58333f3feb3238409";
 
 const HomePage = () => {
+  // feching all movies data
   const [moviesData, setMoviesData] = useState([]);
-
-  // const [searchFilterdData, setSearchFilterdData] = useState([]);
-
   const [isLoading, setIsLoading] = useState(true);
 
-  // const [requestToken, setRequestToken] = useState("");
-  // console.log(requestToken)
+  // feching search movie data
+  // const [searchedArray, setSearchedArray] = useState([]);
+  const [searchValue, setSearchValue] = useState("");
 
-  // search filter
-  // const searchDataFiltering = (value) => {
-  //   console.log(value);
-  //   if (value !== "") {
-  //     const searchmovieData = moviesData.filter((eachItem) =>
-  //       eachItem.title.toLowerCase().includes(value.toLowerCase())
-  //     );
-  //     return setSearchFilterdData(searchmovieData);
-  //   } else {
-  //     return setSearchFilterdData([...moviesData]);
-  //   }
-  //   return;
-  // };
-
-  // authentication
-  // const getrequestToken = async () => {
-  //   const response = await fetch(toGetRequestToken);
-  //   const requestTokenData = await response.json();
-  //   setRequestToken(requestTokenData.request_token);
-  // };
-
-  // const getAuthentication = async () => {
-  //   const tokenKey = {
-  //     request_token: requestToken,
-  //   };
-  //   console.log(tokenKey);
-  //   const options = {
-  //     method: "POST",
-  //     body: JSON.stringify(tokenKey),
-  //   };
-  //   const askingPermission = await fetch(
-  //     "https://api.themoviedb.org/3/authentication/session/new?api_key=4a867d8702eaa2d58333f3feb3238409",
-  //     options
-  //   );
-  //   const sessionKey = await askingPermission.json();
-  //   console.log(sessionKey);
-  // };
-
-  // fetching movies list
+  // ------------------------- fetching movies list and seach list  ------------------------
   const fetchMoviesDatafromApi = async () => {
     const key = "4a867d8702eaa2d58333f3feb3238409";
     const movisListCount = 10;
     const moviesApi = `https://api.themoviedb.org/3/list/${movisListCount}?api_key=${key}`;
+    const searchUrl = `https://api.themoviedb.org/3/search/movie?api_key=4a867d8702eaa2d58333f3feb3238409&query=${searchValue}`;
     try {
-      const moviesData = await fetch(moviesApi);
-      const data = await moviesData.json();
-      setIsLoading(false);
-      setMoviesData(data.items);
-      // setSearchFilterdData(data.items);
+      if (searchValue === "") {
+        const moviesData = await fetch(moviesApi);
+        const data = await moviesData.json();
+        setIsLoading(false);
+        setMoviesData(data.items);
+      } else {
+        const moviesData = await fetch(searchUrl);
+        const data = await moviesData.json();
+        setIsLoading(false);
+        setMoviesData(data.results);
+      }
     } catch {
       console.log("error Fetching");
     }
   };
 
-  // useEffect(() => {
-  //   getrequestToken();
-  // }, []);
-
-  // useEffect(() => {
-  //   getAuthentication();
-  // }, [requestToken]);
-
   useEffect(() => {
     fetchMoviesDatafromApi();
-  }, []);
+  }, [searchValue]);
+
+  const onChangeSearch = (e) => {
+    setSearchValue(e.target.value);
+  };
+
+  const onFormSubmit = (e) => {
+    e.preventDefault();
+    // gettingDataFromSearchUrl();
+  };
+
+  // feching search movie data only
+  // const gettingDataFromSearchUrl = async () => {
+  //   setIsLoading(true);
+  //   const searchUrl = `https://api.themoviedb.org/3/search/movie?api_key=4a867d8702eaa2d58333f3feb3238409&query=${searchValue}`;
+  //   const response = await fetch(searchUrl);
+  //   const data = await response.json();
+  //   setIsLoading(false);
+  //   setSearchedArray(data.results);
+  // };
+
+  // ------------------------- fetching movies list method 1 ------------------------
+  // const fetchMoviesDatafromApi = async () => {
+  //   const key = "4a867d8702eaa2d58333f3feb3238409";
+  //   const movisListCount = 10;
+  //   const moviesApi = `https://api.themoviedb.org/3/list/${movisListCount}?api_key=${key}`;
+  //   try {
+  //     const moviesData = await fetch(moviesApi);
+  //     const data = await moviesData.json();
+  //     setIsLoading(false);
+  //     setMoviesData(data.items);
+  //   } catch {
+  //     console.log("error Fetching");
+  //   }
+  // };
 
   return isLoading ? (
     <div className="w-screen h-screen flex justify-center items-center">
@@ -89,12 +83,32 @@ const HomePage = () => {
     </div>
   ) : (
     <>
-      
-        <div>
-          <h1>Movies List</h1>
-          <MoviesPage moviesData={moviesData} />
+      <div>
+        <div className="px-[20px] pt-[30px] md:px-[40px] lg:px-[60px]">
+          <form type="submit" onSubmit={(e) => onFormSubmit(e)}>
+            <div className="flex justify-start">
+              <div className="border rounded-md flex items-center pr-2">
+                <input
+                  placeholder="Search Movie here"
+                  onChange={(e) => onChangeSearch(e)}
+                  type="search"
+                  className="outline-none  md:w-[300px] p-1 pl-2 "
+                />
+                <button className="border-l-2 pl-2" type="submit">
+                  <BsSearch />
+                </button>
+              </div>
+            </div>
+          </form>
+
+          <h1 className="py-5 text-2xl font-bold">Movies List</h1>
         </div>
-     
+        {/* {searchedArray.length === 0 ? ( */}
+        <MoviesPage moviesData={moviesData} />
+        {/* // ) : (
+        //   <MoviesPage moviesData={searchedArray} />
+        // )} */}
+      </div>
     </>
   );
 };

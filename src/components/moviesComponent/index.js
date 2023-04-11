@@ -59,9 +59,9 @@ const MoviesPage = (props) => {
         ) : (
           <div className="grid grid-cols-2 gap-3 gap-y-4 content-between md:grid-cols-4 lg:grid-cols-6">
             {pageMoviesData.map((eachMovie) => (
-              <div className="relative border rounded rounded-md h-full">
+              <div className="relative shadow-[0_1px_4px_rgba(0,0,0,0.16)] hover:shadow-[0_5px_20px_rgba(0,0,0,0.26)] rounded rounded-md h-full">
                 <img
-                  alt={eachMovie.title}
+                  alt={eachMovie.title}           
                   className="w-full max-w-none "
                   src={posterImageUrl + eachMovie.poster_path}
                 />
@@ -79,7 +79,7 @@ const MoviesPage = (props) => {
 
                 <div className="p-2">
                   <Link to={`/movie/${eachMovie.id}`}>
-                    <h2 className="cursor-pointer font-semibold">
+                    <h2 className="cursor-pointer font-semibold hover:text-sky-600">
                       {eachMovie.title}
                     </h2>
                   </Link>

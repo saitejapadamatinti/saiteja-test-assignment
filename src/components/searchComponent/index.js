@@ -2,14 +2,13 @@ import React, { useEffect, useState } from "react";
 import MoviesPage from "../moviesComponent";
 import { useParams } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
+// import UserContext from "../header";
 
 const SearchPage = () => {
   const [searchedArray, setSearchedArray] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  console.log(searchedArray.length)
 
   const { value } = useParams();
-//   console.log(value);
 
   const gettingDataFromSearchUrl = async () => {
     const searchUrl = `https://api.themoviedb.org/3/search/movie?api_key=4a867d8702eaa2d58333f3feb3238409&query=${value}`;
@@ -29,9 +28,11 @@ const SearchPage = () => {
     </div>
   ) : (
     <div>
+      {/* <UserContext.Consumer>{console.log(value)}</UserContext.Consumer> */}
       {searchedArray.length === 0 ? (
-        
-        <div className="w-screen h-full flex justify-center items-center"><p className="text-2xl font-bold mt-[40%] md:mt-[20%]" >No data</p></div>
+        <div className="w-screen h-full flex justify-center items-center">
+          <p className="text-2xl font-bold mt-[40%] md:mt-[20%]">No data</p>
+        </div>
       ) : (
         <div>
           <MoviesPage isClicked="true" moviesData={searchedArray} />

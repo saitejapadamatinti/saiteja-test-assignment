@@ -14,7 +14,7 @@ const Pagenation = ({ moviesData, pageHandler }) => {
   }
 
   return (
-    <div className="mt-4">
+    <div className="my-6">
       {pageNumber.map((eachNumber) =>
         selectedNumber === eachNumber ? (
           <button

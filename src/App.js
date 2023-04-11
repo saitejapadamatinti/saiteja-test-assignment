@@ -9,7 +9,6 @@ function App() {
   return (
     <>
       <Header />
-
       <Routes>
         <Route path="/" element={<HomePage />}></Route>
         <Route path="/movie/:id" element={<MovieDetails />}></Route>
